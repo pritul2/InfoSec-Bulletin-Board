@@ -11,6 +11,9 @@
 			die('<p>You did not fill in a required field.
 			Please go back and try again!</p>');
 		}
+		if(!preg_match('/^[a-zA-Z0-9]+$/', $_POST['username'])) {
+    			die('<p>Invalid username format.</p>');
+		}
 		
 		$passwordHash = password_hash($_POST['password'],PASSWORD_DEFAULT);
 		
