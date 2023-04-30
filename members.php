@@ -1,6 +1,8 @@
 <?php
 	// Connects to the Database 
 	include('connect.php');
+	include('utils.php');
+	//include('error_display.php');
 	connect();
 	
 	//if the login form is submitted 
@@ -26,8 +28,10 @@
 		}
 		else
 		{
+			$encryption_key = openssl_digest(php_uname(), 'MD5', TRUE);
+			$enc_user_name = encrypt_string($_POST['username'],$encryption_key);
 			$hour = time() + 3600; 
-			setcookie(hackme, $_POST['username'], $hour); 
+			setcookie(hackme, $enc_user_name, $hour); 
 			setcookie(hackme_pass, $passwordHash, $hour);
 			header("Location: members.php");
 		}
@@ -51,7 +55,9 @@
 				 die('Why are you not logged in?!');
 			}else
 			{
-				print("<p>Logged in as <a>$_COOKIE[hackme]</a></p>");
+				$encryption_key = openssl_digest(php_uname(), 'MD5', TRUE);
+				$userName = decrypt_string($_COOKIE['hackme'],$encryption_key);
+				print("<p>Logged in as <a>$userName</a></p>");
 			}
 			?>
         </div>

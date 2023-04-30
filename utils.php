@@ -1,60 +1,21 @@
 <?php
-function hash_cookie($value)
-{
-    if (!$value)
-    {
-        return false;
-    }
-    $pt = $value;
-    $ct = hash_hmac('md5', $pt, 'GFG_DATA');
-    return trim($ct);
+//include('error_display.php');
+function encrypt_string($simple_string, $encryption_key){
+    $ciphering = "aes-256-cbc";
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($ciphering));
+    $encryption = openssl_encrypt($simple_string, $ciphering, $encryption_key, OPENSSL_RAW_DATA, $iv);
+    $encrypted_data = base64_encode($iv . $encryption); // Combine IV and ciphertext and encode as base64
+    echo "<script>console.log('Debug Objects: " . $encrypted_data . "' );</script>";
+    return $encrypted_data;
 }
 
-function encrypt_cookie($value)
-{
-    if (!$value)
-    {
-        return false;
-    }
-    $cipher = "AES-128-CBC";
-    $key = "it key";
-
-    $len = openssl_cipher_iv_length($cipher = "AES-128-CBC");
-    $iv = openssl_random_pseudo_bytes($len);
-
-    $ct_raw = openssl_encrypt($value, $cipher, $key, $options = OPENSSL_RAW_DATA, $iv);
-    $hmac = hash_hmac('sha256', $ct_raw, $key, $as_binary = true);
-    $ct = base64_encode($iv . $hmac . $ct_raw);
-
-    return trim($ct);
-}
-
-function decrypt_cookie($value)
-{
-    if (!$value)
-    {
-        return false;
-    }
-    $cipher = "AES-128-CBC";
-    $key = "it key";
-
-    $c = base64_decode($value);
-
-    $len = openssl_cipher_iv_length($cipher = "AES-128-CBC");
-    $iv = substr($c, 0, $len);
-    $hmac = substr($c, $len, $sha2len = 32);
-    $ct_raw = substr($c, $len + $sha2len);
-    $original_plaintext = openssl_decrypt($ct_raw, $cipher, $key, $options = OPENSSL_RAW_DATA, $iv);
-
-    $calcmac = hash_hmac('sha256', $ct_raw, $key, $as_binary = true);
-    if (hash_equals($hmac, $calcmac))
-    {
-        return trim($original_plaintext);
-    }
-    else
-    {
-        return false;
-    }
+function decrypt_string($encrypted_data, $encryption_key){
+    $ciphering = "aes-256-cbc";
+    $encrypted_data = base64_decode($encrypted_data); // Decode base64-encoded string
+    $iv = substr($encrypted_data, 0, openssl_cipher_iv_length($ciphering)); // Extract IV from encrypted data
+    $encryption = substr($encrypted_data, openssl_cipher_iv_length($ciphering)); // Extract ciphertext from encrypted data
+    $decryption = openssl_decrypt($encryption, $ciphering, $encryption_key, OPENSSL_RAW_DATA, $iv);
+    return $decryption;
 }
 
 ?>

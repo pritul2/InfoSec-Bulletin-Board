@@ -1,12 +1,6 @@
 <?php
-include('connect.php');
-connect();
-include ('utils.php');
-
-$userName = decrypt_cookie($_COOKIE['hackme']);
-
+//include('error_display.php');
 setcookie(hackme, "", time() - 3600);
-mysql_query("UPDATE users SET extra='' WHERE username = '$userName'") or die(mysql_error());
-
+setcookie(hackme_pass, "", time() - 3600);
 header("Location: index.php");
 ?>

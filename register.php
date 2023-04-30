@@ -7,6 +7,7 @@
 <?php
 	include('connect.php');
 	include('header.php');
+    //include('error_display.php');
 	connect();
 ?>
 <div class="post">
@@ -24,7 +25,7 @@
 				Please go back and try again!</p>');
  			}
 		
-			$passwordHash = hash('sha256', $_POST['password']);
+			$passwordHash = password_hash($_POST['password'],PASSWORD_BCRYPT);
 			
 			$check = mysql_query("SELECT * FROM users WHERE username = '".$_POST['uname']."'")or die(mysql_error());
  

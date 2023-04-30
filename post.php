@@ -1,30 +1,26 @@
 <?php
-// Connects to the Database
-include ('connect.php');
-include ('utils.php');
-connect();
-
-//if the login form is submitted
-if (isset($_POST['post_submit']))
-{
-
-    $_POST['title'] = trim($_POST['title']);
-    if (!$_POST['title'] | !$_POST['message'])
-    {
-        include ('header.php');
-        die('<p>You did not fill in a required field.
+// Connects to the Database 
+	include('connect.php');
+	//include('error_display.php');
+	connect();
+	
+	//if the login form is submitted 
+	if (isset($_POST['post_submit'])) {
+		
+		$_POST['title'] = trim($_POST['title']);
+		if(!$_POST['title'] | !$_POST['message']) {
+			include('header.php');
+			die('<p>You did not fill in a required field.
 			Please go back and try again!</p>');
-    }
-    $userName = decrypt_cookie($_COOKIE['hackme']);
-    print ("<p>Logged in as <a>$userName</a></p>");
-
-    mysql_query("INSERT INTO threads (username, title, message, date) VALUES('" . $userName . "', '" . $_POST['title'] . "', '" . $_POST[message] . "', '" . time() . "')") or die(mysql_error());
-
-    //mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$_COOKIE['hackme']."', '". $_POST['title']."', '". $_POST[message]."', CURDATE() )")or die(mysql_error());
-    
-
-    header("Location: members.php");
-}
+		}
+		
+		mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$_COOKIE['hackme']."', '". $_POST['title']."', '". $_POST[message]."', '".time()."')")or die(mysql_error());
+		
+		//mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$_COOKIE['hackme']."', '". $_POST['title']."', '". $_POST[message]."', CURDATE() )")or die(mysql_error());
+		
+		
+		header("Location: members.php");
+	}
 ?>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,37 +29,23 @@ if (isset($_POST['post_submit']))
 <title>hackme</title>
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 <?php
-include ('header.php');
+	include('header.php');
 ?>
 <div class="post">
 	<div class="post-bgtop">
 		<div class="post-bgbtm">
         <h2 class = "title">hackme bulletin board</h2>
         	<?php
-if (!isset($_COOKIE['hackme']))
-{
-    die('Why are you not logged in?!');
-}
-else
-{
-    $userName = decrypt_cookie($_COOKIE['hackme']);
-    print ("<p>Logged in as <a>$userName</a></p>");
-
-    $extra = mysql_query("SELECT extra FROM users WHERE username = '$userName'") or die(mysql_error());
-
-    while ($thisextra = mysql_fetch_array($extra))
-    {
-
-        if (!(md5($_COOKIE['hackme']) == $thisextra['extra']))
-        {
-            die('<p>hacked</p>');
-        }
-    }
-}
-?>
+            if(!isset($_COOKIE['hackme'])){
+				 die('Why are you not logged in?!');
+			}else
+			{
+				print("<p>Logged in as <a>$_COOKIE[hackme]</a></p>");
+			}
+			?>
             
             <h2 class="title">NEW POST</h2>
-            <p class="meta">by <a href="#"><?php echo decrypt_cookie($_COOKIE['hackme']) ?> </a></p>
+            <p class="meta">by <a href="#"><?php echo $_COOKIE['hackme'] ?> </a></p>
             <p> do not leave any fields blank... </p>
             
             <form method="post" action="post.php">
@@ -83,7 +65,7 @@ else
 </div>
 
 <?php
-include ('footer.php');
+	include('footer.php');
 ?>
 </body>
 </html>

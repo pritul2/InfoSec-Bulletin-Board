@@ -5,20 +5,16 @@
 	<div id="menu">
 		<ul>
         <?php
-if (!isset($_COOKIE['hackme']))
-{ ?>
+			if(!isset($_COOKIE['hackme'])){ ?>
 				<li><a href="index.php">Login</a></li>
 				<li><a href="register.php">Register</a></li>
         <?php
-}
-else
-{
-?>
+			}else{
+		?>
         		<li><a href="members.php">Main</a></li>
 				<li><a href="post.php">Post</a></li>
                 <li><a href="logout.php">logout</a></li>
-        <?php
-} ?>
+        <?php }?>
 		</ul>
 	</div>
 	<!-- end #menu -->

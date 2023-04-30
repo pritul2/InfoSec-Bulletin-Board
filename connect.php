@@ -1,4 +1,5 @@
 <?php
+	//include 'error_display.php';
 	function connect()
 	{
 		// Connects to the Database 
