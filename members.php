@@ -31,8 +31,10 @@
 			$encryption_key = openssl_digest(php_uname(), 'MD5', TRUE);
 			$enc_user_name = encrypt_string($_POST['username'],$encryption_key);
 			$hour = time() + 3600; 
-			setcookie(hackme, $enc_user_name, $hour); 
-			setcookie(hackme_pass, $passwordHash, $hour);
+			//setcookie(hackme, $enc_user_name, $hour); 
+			setcookie(hackme, $enc_user_name, $hour, '~pmd220000; SameSite=strict');
+			//setcookie(hackme_pass, $passwordHash, $hour);
+			setcookie(hackme_pass, $passwordHash, $hour, '~pmd220000; SameSite=strict');
 			header("Location: members.php");
 		}
 	}

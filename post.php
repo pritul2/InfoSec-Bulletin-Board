@@ -1,20 +1,27 @@
 <?php
 // Connects to the Database 
 	include('connect.php');
+	include('utils.php');
 	//include('error_display.php');
 	connect();
-	
+	$encryption_key = openssl_digest(php_uname(), 'MD5', TRUE);
+	$userName = decrypt_string($_COOKIE['hackme'],$encryption_key);
 	//if the login form is submitted 
 	if (isset($_POST['post_submit'])) {
 		
-		$_POST['title'] = trim($_POST['title']);
+		$_POST['title'] = htmlspecialchars(trim($_POST['title']));
+		$_POST['message'] = htmlspecialchars($_POST['message']);
+
 		if(!$_POST['title'] | !$_POST['message']) {
 			include('header.php');
 			die('<p>You did not fill in a required field.
 			Please go back and try again!</p>');
 		}
+
 		
-		mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$_COOKIE['hackme']."', '". $_POST['title']."', '". $_POST[message]."', '".time()."')")or die(mysql_error());
+		echo "chheck below";
+		echo $userName;
+		mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$userName."', '". $_POST['title']."', '". $_POST['message']."', '".time()."')")or die(mysql_error());
 		
 		//mysql_query("INSERT INTO threads (username, title, message, date) VALUES('".$_COOKIE['hackme']."', '". $_POST['title']."', '". $_POST[message]."', CURDATE() )")or die(mysql_error());
 		
@@ -40,12 +47,12 @@
 				 die('Why are you not logged in?!');
 			}else
 			{
-				print("<p>Logged in as <a>$_COOKIE[hackme]</a></p>");
+				print("<p>Logged in as <a>$userName</a></p>");
 			}
 			?>
             
             <h2 class="title">NEW POST</h2>
-            <p class="meta">by <a href="#"><?php echo $_COOKIE['hackme'] ?> </a></p>
+            <p class="meta">by <a href="#"><?php echo $userName ?> </a></p>
             <p> do not leave any fields blank... </p>
             
             <form method="post" action="post.php">

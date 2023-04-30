@@ -40,7 +40,7 @@
          
          <div class="entry">
 			
-            <?php echo $thisthread[message] ?>
+            <?php echo htmlspecialchars($thisthread[message]) ?>
             					
 		 </div>
          
